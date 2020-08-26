@@ -19,3 +19,6 @@ jobs:
       
     - name: go version
       run: go version
+
+    - name: Hello
+      run: echo hello
