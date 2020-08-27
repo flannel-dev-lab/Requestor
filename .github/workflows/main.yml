@@ -16,9 +16,12 @@ jobs:
       image: golang:alpine
     steps:
     - uses: actions/checkout@v2
-      
+
     - name: go version
       run: go version
+
+    - name: Install Dependencies
+      run: apk update && apk install gcc
 
     - name: go test
       run: go test -v
