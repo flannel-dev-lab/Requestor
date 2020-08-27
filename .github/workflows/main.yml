@@ -21,7 +21,7 @@ jobs:
       run: go version
 
     - name: Install Dependencies
-      run: apk update && apk install gcc
+      run: apk update && apk add gcc
 
     - name: go test
       run: go test -v
