@@ -17,5 +17,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: go tests
-      run: go test ./...
+    - name: go version
+      run: go version
+
+    - name: go test
+      run: go test -v
