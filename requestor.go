@@ -5,7 +5,9 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -14,6 +16,8 @@ import (
 type Client struct {
 	// MaxRetriesOnError specifies how many times we should retry when a request to server fails
 	MaxRetriesOnError uint8
+	// TimeBetweenRetries specifies the amount of time between each retry
+	TimeBetweenRetries uint64
 	// Timeout specifies a time limit for requests made by this
 	// Client. The timeout includes connection time, any
 	// redirects, and reading the response body. The timer remains
@@ -53,34 +57,47 @@ func New() (client *Client) {
 	}
 }
 
+// SetTLSClientConfig attaches custom client tls config to Transport
 func (c *Client) SetTLSClientConfig(tlsConfig *tls.Config) {
 	c.TLSClientConfig = tlsConfig
 }
 
+// DisableKeepAlive sets keep-alive to either true/false
 func (c *Client) DisableKeepAlive(val bool) {
 	c.DisableKeepAlives = val
 }
 
+// SetMaxConnectionsPerHost sets the max connections per host
 func (c *Client) SetMaxConnectionsPerHost(connectionCount int) {
 	c.MaxConnectionsPerHost = connectionCount
 }
 
+// SetMaxIdleConnectionsPerHost sets the max idle connections per host
 func (c *Client) SetMaxIdleConnectionsPerHost(connectionCount int) {
 	c.MaxIdleConnectionsPerHost = connectionCount
 }
 
+// SetMaxIdleConnections sets the max idle connections
 func (c *Client) SetMaxIdleConnections(connectionCount int) {
 	c.MaxIdleConnections = connectionCount
 }
 
-func (c *Client) SetMaxRetries(retries uint8) {
+// SetMaxRetries sets the max amount of retries and the time between them
+func (c *Client) SetMaxRetries(retries uint8, timeBetweenRetries uint64) {
 	c.MaxRetriesOnError = retries
+	if timeBetweenRetries == 0 {
+		c.TimeBetweenRetries = 1
+	} else {
+		c.TimeBetweenRetries = timeBetweenRetries
+	}
 }
 
+// SetTimeout sets timeout to request
 func (c *Client) SetTimeout(timeout time.Duration) {
 	c.Timeout = timeout
 }
 
+// SetIdleConnectionTimeout sets the idle connection timeout
 func (c *Client) SetIdleConnectionTimeout(timeout time.Duration) {
 	c.IdleConnectionTimeout = timeout
 }
@@ -170,9 +187,62 @@ func (c *Client) makeRequest(url, method string, headers, queryParams map[string
 		if contentType[0] == "application/json" || strings.Contains(contentType[0], "application/json") {
 			return c.makeJSONRequest(url, method, headers, queryParams, data)
 		}
+
+		if contentType[0] == "application/x-www-form-urlencoded" || strings.Contains(contentType[0], "application/x-www-form-urlencoded") {
+			return c.makeFormURLEncodedRequest(url, method, headers, queryParams, data)
+		}
 	}
 
 	return c.makeJSONRequest(url, method, headers, queryParams, data)
+}
+
+func (c *Client) makeFormURLEncodedRequest(formURL, method string, headers, queryParams map[string][]string, data interface{}) (response *http.Response, err error) {
+	dataMap, ok := data.(map[string][]string)
+	if !ok {
+		return response, errors.New("data should be of the form map[string][]string")
+	}
+
+	formData := url.Values{}
+
+	for formDataKey, formDataValues := range dataMap {
+		for _, formDataValue := range formDataValues {
+			formData.Add(formDataKey, formDataValue)
+		}
+	}
+
+	httpClient := http.Client{
+		Transport: c.transport,
+		Timeout:   c.Timeout,
+	}
+
+	var request *http.Request
+
+	if len(dataMap) > 0 {
+		request, err = http.NewRequest(method, formURL, strings.NewReader(formData.Encode()))
+	} else {
+		request, err = http.NewRequest(method, formURL, nil)
+	}
+	if err != nil {
+		return response, err
+	}
+
+	q := request.URL.Query()
+
+	for queryKey, queryValues := range queryParams {
+		for _, val := range queryValues {
+			q.Add(queryKey, val)
+		}
+	}
+
+	request.URL.RawQuery = q.Encode()
+
+	for headerKey, headerValues := range headers {
+		for _, val := range headerValues {
+			request.Header.Add(headerKey, val)
+		}
+	}
+
+	return httpClient.Do(request)
 }
 
 func (c *Client) makeJSONRequest(url, method string, headers, queryParams map[string][]string, data interface{}) (response *http.Response, err error) {
