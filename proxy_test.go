@@ -6,7 +6,7 @@ import (
 )
 
 func TestClient_SetHTTPProxy(t *testing.T) {
-	testCases := []struct{
+	testCases := []struct {
 		proxyURL string
 		username string
 		password string
@@ -31,7 +31,7 @@ func TestClient_SetHTTPProxy(t *testing.T) {
 }
 
 func TestClient_SetHTTPSProxy(t *testing.T) {
-	testCases := []struct{
+	testCases := []struct {
 		proxyURL string
 		username string
 		password string

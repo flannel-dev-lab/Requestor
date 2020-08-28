@@ -11,7 +11,7 @@ import (
 func (c *Client) SetHTTPProxy(proxyURL, username, password string) {
 	proxyConfig := &url.URL{
 		Scheme: "http",
-		Host: proxyURL,
+		Host:   proxyURL,
 	}
 
 	if username != "" && password != "" {
@@ -30,7 +30,7 @@ func (c *Client) SetHTTPProxy(proxyURL, username, password string) {
 func (c *Client) SetHTTPSProxy(proxyURL, username, password string) {
 	proxyConfig := &url.URL{
 		Scheme: "https",
-		Host: proxyURL,
+		Host:   proxyURL,
 	}
 
 	if username != "" && password != "" {

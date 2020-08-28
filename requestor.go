@@ -20,7 +20,7 @@ type Client struct {
 	// A Timeout of zero means no timeout.
 	// The Client cancels requests to the underlying Transport
 	// as if the Request's Context ended.
-	Timeout           time.Duration
+	Timeout time.Duration
 	// IdleConnectionTimeout specifies how long an idle connection is kept in the connection pool
 	// 0 means no timeout
 	IdleConnectionTimeout time.Duration
@@ -43,8 +43,39 @@ type Client struct {
 
 func New() (client *Client) {
 	return &Client{
-		transport: &http.Transport{},
+		Timeout:               0,
+		DisableKeepAlives:     true,
+		IdleConnectionTimeout: 0,
+		transport:             &http.Transport{},
 	}
+}
+
+func (c *Client) DisableKeepAlive(val bool) {
+	c.DisableKeepAlives = val
+}
+
+func (c *Client) SetMaxConnectionsPerHost(connectionCount int) {
+	c.MaxConnectionsPerHost = connectionCount
+}
+
+func (c *Client) SetMaxIdleConnectionsPerHost(connectionCount int) {
+	c.MaxIdleConnectionsPerHost = connectionCount
+}
+
+func (c *Client) SetMaxIdleConnections(connectionCount int) {
+	c.MaxIdleConnections = connectionCount
+}
+
+func (c *Client) SetMaxRetries(retries uint8) {
+	c.MaxRetriesOnError = retries
+}
+
+func (c *Client) SetTimeout(timeout time.Duration) {
+	c.Timeout = timeout
+}
+
+func (c *Client) SetIdleConnectionTimeout(timeout time.Duration) {
+	c.IdleConnectionTimeout = timeout
 }
 
 // Get performs a HTTP GET request. It takes in a URL, user specified headers, query params and returns Response and
