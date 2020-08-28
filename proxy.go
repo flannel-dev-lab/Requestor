@@ -1,5 +1,5 @@
 // Package Requestor contains the methods to make HTTP requests to different endpoints
-package Requestor
+package requestor
 
 import (
 	"net/http"

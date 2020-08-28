@@ -1,5 +1,5 @@
-// Package Requestor contains the methods to make HTTP requests to different endpoints
-package Requestor
+// Package requestor contains the methods to make HTTP requests to different endpoints
+package requestor
 
 import (
 	"bytes"
@@ -166,7 +166,7 @@ func (c *Client) makeRequest(url, method string, headers, queryParams map[string
 	}
 
 	contentType, ok := canonicalHeaders["Content-Type"]
-	if ok && len(contentType) >= 1{
+	if ok && len(contentType) >= 1 {
 		if contentType[0] == "application/json" || strings.Contains(contentType[0], "application/json") {
 			return c.makeJSONRequest(url, method, headers, queryParams, data)
 		}
@@ -183,8 +183,8 @@ func (c *Client) makeJSONRequest(url, method string, headers, queryParams map[st
 	}
 
 	httpClient := http.Client{
-		Transport:     c.transport,
-		Timeout:       c.Timeout,
+		Transport: c.transport,
+		Timeout:   c.Timeout,
 	}
 
 	var request *http.Request
