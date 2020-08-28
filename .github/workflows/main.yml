@@ -10,12 +10,18 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
     container: 
       image: golang:alpine
     steps:
     - uses: actions/checkout@v2
-      
+
     - name: go version
       run: go version
+
+    - name: Install Dependencies
+      run: apk update && apk add musl-dev libffi-dev openssl-dev gcc git libc-dev
+
+    - name: go test
+      run: go test -v
