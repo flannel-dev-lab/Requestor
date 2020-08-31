@@ -306,6 +306,12 @@ func TestClient_InvalidURL(t *testing.T) {
 	if err == nil {
 		t.Error("invalid url gave no error")
 	}
+
+	delete(headers, "Content-Type")
+	_, err = client.Post("postgres://user:abc{DEf1=ghi@example.com:5432/db?sslmode=require", headers, queryParams, map[string]string{"hello": "world"})
+	if err == nil {
+		t.Error("invalid url gave no error")
+	}
 }
 
 func TestClient_Post_NilData(t *testing.T) {
