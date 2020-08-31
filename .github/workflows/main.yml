@@ -21,7 +21,7 @@ jobs:
       run: go version
 
     - name: Install Dependencies
-      run: apk update && apk add musl-dev libffi-dev openssl-dev gcc git libc-dev
+      run: apk update && apk add musl-dev libffi-dev openssl-dev gcc git libc-dev curl
 
     - name: go test
       run: mkdir cover && go test -coverprofile=cover/cover.out
@@ -35,8 +35,5 @@ jobs:
         name: Coverage
         path: cover/coverage.html
 
-    - uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: cover/coverage.html
-        fail_ci_if_error: true
+    - uses: Upload to Codecov
+      run: CODECOV_TOKEN={{ secrets.CODECOV_TOKEN }} sh <(curl -s https://codecov.io/bash)
