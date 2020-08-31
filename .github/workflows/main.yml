@@ -21,7 +21,7 @@ jobs:
       run: go version
 
     - name: Install Dependencies
-      run: apk update && apk add musl-dev libffi-dev openssl-dev gcc git libc-dev curl
+      run: apt update && apt install musl-dev libffi-dev openssl-dev gcc git libc-dev curl -y
 
     - name: go test
       run: mkdir cover && go test -coverprofile=cover/cover.out
