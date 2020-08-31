@@ -242,7 +242,7 @@ func TestClient_Post(t *testing.T) {
 	}))
 
 	headers := map[string][]string{
-		"test": {"GET"},
+		"test":         {"GET"},
 		"Content-Type": {"application/json"},
 	}
 
@@ -287,7 +287,7 @@ func TestClient_Post(t *testing.T) {
 
 func TestClient_InvalidURL(t *testing.T) {
 	headers := map[string][]string{
-		"test": {"GET"},
+		"test":         {"GET"},
 		"Content-Type": {"application/json"},
 	}
 
@@ -327,7 +327,7 @@ func TestClient_Post_NilData(t *testing.T) {
 	}))
 
 	headers := map[string][]string{
-		"test": {"GET"},
+		"test":         {"GET"},
 		"Content-Type": {"application/json"},
 	}
 
@@ -380,7 +380,7 @@ func TestClient_Post_FormURLEncoded(t *testing.T) {
 	}))
 
 	headers := map[string][]string{
-		"test": {"GET"},
+		"test":         {"GET"},
 		"Content-Type": {"application/x-www-form-urlencoded"},
 	}
 
@@ -437,7 +437,7 @@ func TestClient_Post_FormURLEncoded_InvalidDataStructure(t *testing.T) {
 	}))
 
 	headers := map[string][]string{
-		"test": {"GET"},
+		"test":         {"GET"},
 		"Content-Type": {"application/x-www-form-urlencoded"},
 	}
 
@@ -467,7 +467,7 @@ func TestClient_Post_FormURLEncoded_NilData(t *testing.T) {
 	}))
 
 	headers := map[string][]string{
-		"test": {"GET"},
+		"test":         {"GET"},
 		"Content-Type": {"application/x-www-form-urlencoded"},
 	}
 
@@ -520,7 +520,7 @@ func TestClient_Put(t *testing.T) {
 	}))
 
 	headers := map[string][]string{
-		"test": {"GET"},
+		"test":         {"GET"},
 		"Content-Type": {"application/json"},
 	}
 
@@ -577,7 +577,7 @@ func TestClient_Patch(t *testing.T) {
 	}))
 
 	headers := map[string][]string{
-		"test": {"GET"},
+		"test":         {"GET"},
 		"Content-Type": {"application/json"},
 	}
 
@@ -634,7 +634,7 @@ func TestClient_Delete(t *testing.T) {
 	}))
 
 	headers := map[string][]string{
-		"test": {"GET"},
+		"test":         {"GET"},
 		"Content-Type": {"application/json"},
 	}
 

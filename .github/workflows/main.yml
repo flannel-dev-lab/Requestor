@@ -24,4 +24,13 @@ jobs:
       run: apk update && apk add musl-dev libffi-dev openssl-dev gcc git libc-dev
 
     - name: go test
-      run: go test -v
+      run: go test -coverprofile=cover/cover.out
+
+    - name: Create Coverage Artifact
+      run: go tool cover -html=cover/cover.out -o cover/coverage.html
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Coverage
+        path: cover/coverage.html
