@@ -34,3 +34,9 @@ jobs:
       with:
         name: Coverage
         path: cover/coverage.html
+
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: cover/coverage.html
+        fail_ci_if_error: true
