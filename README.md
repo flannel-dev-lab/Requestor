@@ -2,6 +2,9 @@
 
 [![Build Status](https://github.com/flannel-dev-lab/Requestor/workflows/Requestor/badge.svg)](https://github.com/flannel-dev-lab/Requestor/workflows/Requestor/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/flannel-dev-lab/Requestor)](https://goreportcard.com/report/github.com/flannel-dev-lab/Requestor)
+[![codecov](https://codecov.io/gh/flannel-dev-lab/Requestor/branch/master/graph/badge.svg)](https://codecov.io/gh/flannel-dev-lab/Requestor)
+![GitHub repo size](https://img.shields.io/github/repo-size/flannel-dev-lab/Requestor)
+![GitHub](https://img.shields.io/github/license/flannel-dev-lab/Requestor)
 
 ![GitHub Logo1](Gopher.jpg)
 
