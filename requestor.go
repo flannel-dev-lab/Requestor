@@ -140,7 +140,7 @@ func (c *Client) Delete(url string, headers, queryParams map[string][]string, da
 	return c.makeRequest(url, http.MethodDelete, headers, queryParams, data)
 }
 
-// Connect performs a HTTP CONNECT request. It takes in a URL, user specified headers, proxyHeaders, query params and returns
+// Connect performs a HTTP CONNECT request. It takes in a URL, user specified headers, query params and returns
 // Response error if exist
 func (c *Client) Connect(url string, headers, queryParams map[string][]string) (response *http.Response, err error) {
 	return c.makeRequest(url, http.MethodConnect, headers, queryParams, nil)

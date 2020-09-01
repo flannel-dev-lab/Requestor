@@ -97,6 +97,17 @@ client := requestor.New()
 client.SetTimeout(10)
 ```
 
+## Using Proxy
+```
+client := requestor.New()
+client.SetHTTPProxy(proxyURL, username, password string)
+```
+or
+```
+client := requestor.New()
+client.SetHTTPSProxy(proxyURL, username, password string)
+```
+
 ### Disabling Keep-Alive
 ```
 client := requestor.New()
