@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/flannel-dev-lab/Requestor/branch/master/graph/badge.svg)](https://codecov.io/gh/flannel-dev-lab/Requestor)
 ![GitHub repo size](https://img.shields.io/github/repo-size/flannel-dev-lab/Requestor)
 ![GitHub](https://img.shields.io/github/license/flannel-dev-lab/Requestor)
-![GoDoc](https://pkg.go.dev/github.com/flannel-dev-lab/Requestor?tab=doc)
+[![GoDoc](https://godoc.org/github.com/flannel-dev-lab/Requestor?status.svg)](https://pkg.go.dev/github.com/flannel-dev-lab/Requestor?tab=doc)
 
 ![GitHub Logo1](Gopher.jpg)
 
