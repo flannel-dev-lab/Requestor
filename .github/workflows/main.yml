@@ -36,4 +36,4 @@ jobs:
         path: coverage.html
 
     - name: Upload to Codecov
-      run: CODECOV_TOKEN={{ secrets.CODECOV_TOKEN }} bash <(curl -s https://codecov.io/bash)
+      run: CODECOV_TOKEN={{ secrets.CODECOV_TOKEN }} curl -s https://codecov.io/bash > cov.sh && bash cov.sh
