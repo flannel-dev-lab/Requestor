@@ -61,6 +61,8 @@ For JSON requests, the data can be either a struct or map, by default Requestor 
 
 For `application/x-www-form-urlencoded` requests, make sure the data is in the form `map[string][]string`
 
+**Note**: Requestor does not support XML
+
 ```go
 package main
 
