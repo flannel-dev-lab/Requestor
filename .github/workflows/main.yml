@@ -13,7 +13,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     container: 
-      image: golang:alpine
+      image: golang
     steps:
     - uses: actions/checkout@v2
 
@@ -21,7 +21,22 @@ jobs:
       run: go version
 
     - name: Install Dependencies
-      run: apk update && apk add musl-dev libffi-dev openssl-dev gcc git libc-dev
+      run: apt update && apt install musl-dev libffi-dev gcc git libc-dev curl -y
 
     - name: go test
-      run: go test -v
+      run: go test -coverprofile=cover.out
+
+    - name: Create Coverage Artifact
+      run: go tool cover -html=cover.out -o coverage.html
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Coverage
+        path: coverage.html
+
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.html
+        fail_ci_if_error: true

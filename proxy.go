@@ -1,4 +1,4 @@
-// Package Requestor contains the methods to make HTTP requests to different endpoints
+// Package requestor contains the methods to make HTTP requests to different endpoints
 package requestor
 
 import (

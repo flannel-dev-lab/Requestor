@@ -48,13 +48,14 @@ type Client struct {
 	transport *http.Transport
 }
 
+// New creates a new Client object
 func New() (client *Client) {
 	return &Client{
 		Timeout:               0,
 		DisableKeepAlives:     true,
 		IdleConnectionTimeout: 0,
 		transport:             &http.Transport{},
-		MaxRetriesOnError: 1,
+		MaxRetriesOnError:     1,
 	}
 }
 
@@ -170,11 +171,7 @@ func (c *Client) makeRequest(url, method string, headers, queryParams map[string
 
 	contentType, ok := canonicalHeaders["Content-Type"]
 
-	var (
-		retry uint8 = 0
-	)
-
-	for retry = 0; retry < c.MaxRetriesOnError; retry++ {
+	for retry := 0; retry < int(c.MaxRetriesOnError); retry++ {
 
 		if ok && len(contentType) >= 1 {
 			if contentType[0] == "application/json" || strings.Contains(contentType[0], "application/json") {
