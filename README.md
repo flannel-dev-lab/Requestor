@@ -26,3 +26,85 @@ and easy (Inspired by python requests).
 ```shell script
 go get github.com/flannel-dev-lab/Requestor
 ```
+
+## Usage
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/flannel-dev-lab/Requestor"
+    "log"
+)
+
+func main() {
+    client := requestor.New()
+    headers := map[string][]string{
+    	"Content-Type": {"application/json"},
+    }
+    
+    queryParams := map[string][]string{
+    	"arg1": {"test"},
+    }
+
+	response, err := client.Get("http://httpbin.org/get", headers, queryParams)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+    fmt.Println("Do something with ", response)
+}
+```
+
+The usage is similar for `POST` method as well, the only difference is that you send can send data in the request.
+For JSON requests, the data can be either a struct or map, by default Requestor assumes Content-Type to be `application/json`
+
+For `application/x-www-form-urlencoded` requests, make sure the data is in the form `map[string][]string`
+
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/flannel-dev-lab/Requestor"
+    "log"
+)
+
+func main() {
+    client := requestor.New()
+    headers := map[string][]string{
+    	"Content-Type": {"application/json"},
+    }
+    
+    queryParams := map[string][]string{
+    	"arg1": {"test"},
+    }
+
+	response, err := client.Post("http://httpbin.org/get", headers, queryParams, map[string]string{"hello": "world"})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+    fmt.Println("Do something with ", response)
+}
+```
+
+## Advanced Usage
+
+### Setting Timeouts
+```go
+client := requestor.New()
+client.SetTimeout(10)
+```
+
+### Disabling Keep-Alive
+```
+client := requestor.New()
+client.DisableKeepAlive(true)
+```
+
+### Much-more settings can be found here [![GoDoc](https://godoc.org/github.com/flannel-dev-lab/Requestor?status.svg)](https://pkg.go.dev/github.com/flannel-dev-lab/Requestor?tab=doc)
+
+
+## Contributing
+Requestor loves contributions. If you find a bug, want to add a feature, you can create a PR and we will take a look.
