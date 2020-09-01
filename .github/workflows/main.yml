@@ -35,5 +35,8 @@ jobs:
         name: Coverage
         path: coverage.html
 
-    - name: Upload to Codecov
-      run: CODECOV_TOKEN={{ secrets.CODECOV_TOKEN }} curl -s https://codecov.io/bash > cov.sh && bash cov.sh
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.html
+        fail_ci_if_error: true
