@@ -24,16 +24,16 @@ jobs:
       run: apt update && apt install musl-dev libffi-dev gcc git libc-dev curl -y
 
     - name: go test
-      run: mkdir cover && go test -coverprofile=cover/cover.out
+      run: go test -coverprofile=cover.out
 
     - name: Create Coverage Artifact
-      run: go tool cover -html=cover/cover.out -o cover/coverage.html
+      run: go tool cover -html=cover.out -o coverage.html
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: Coverage
-        path: cover/coverage.html
+        path: coverage.html
 
     - name: Upload to Codecov
       run: CODECOV_TOKEN={{ secrets.CODECOV_TOKEN }} bash <(curl -s https://codecov.io/bash)
