@@ -45,12 +45,15 @@ type Client struct {
 	// TLSClientConfig specifies the TLS config to use
 	TLSClientConfig *tls.Config
 
-	transport *http.Transport
+	transport  *http.Transport
+	httpClient *http.Client
 }
 
 // New creates a new Client object
 func New() (client *Client) {
+	httpClient := &http.Client{}
 	return &Client{
+		httpClient:            httpClient,
 		Timeout:               0,
 		DisableKeepAlives:     true,
 		IdleConnectionTimeout: 0,
@@ -229,10 +232,7 @@ func (c *Client) makeFormURLEncodedRequest(formURL, method string, headers, quer
 		}
 	}
 
-	httpClient := http.Client{
-		Transport: c.transport,
-		Timeout:   c.Timeout,
-	}
+	c.httpClient.Timeout = c.Timeout
 
 	var request *http.Request
 
@@ -261,7 +261,7 @@ func (c *Client) makeFormURLEncodedRequest(formURL, method string, headers, quer
 		}
 	}
 
-	return httpClient.Do(request)
+	return c.httpClient.Do(request)
 }
 
 func (c *Client) makeJSONRequest(url, method string, headers, queryParams map[string][]string, data interface{}) (response *http.Response, err error) {
@@ -274,10 +274,7 @@ func (c *Client) makeJSONRequest(url, method string, headers, queryParams map[st
 		}
 	}
 
-	httpClient := http.Client{
-		Transport: c.transport,
-		Timeout:   c.Timeout,
-	}
+	c.httpClient.Timeout = c.Timeout
 
 	var request *http.Request
 
@@ -306,7 +303,7 @@ func (c *Client) makeJSONRequest(url, method string, headers, queryParams map[st
 		}
 	}
 
-	return httpClient.Do(request)
+	return c.httpClient.Do(request)
 }
 
 // populateTransport populates the transport config
@@ -318,4 +315,6 @@ func (c *Client) populateTransport() {
 	c.transport.MaxIdleConnsPerHost = c.MaxIdleConnectionsPerHost
 	c.transport.MaxIdleConns = c.MaxIdleConnections
 	c.transport.TLSClientConfig = c.TLSClientConfig
+
+	c.httpClient.Transport = c.transport
 }
